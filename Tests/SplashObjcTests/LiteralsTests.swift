@@ -223,7 +223,7 @@ class LiteralTests: XCTestCase {
             .whitespace(" "),
             .plainText("="),
             .whitespace(" "),
-            .token("'M'", .number),
+            .token("@'M'", .number),
             .plainText(";")
         ])
     }

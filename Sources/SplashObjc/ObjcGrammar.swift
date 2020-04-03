@@ -143,11 +143,31 @@ public struct ObjcGrammar: Grammar {
         var tokenType: TokenType = .number
 
         func matches(_ segment: Segment) -> Bool {
-//            if segment.tokens.current == "'" {
-//                return true
-//            }
+            let current = segment.tokens.current
+            let next = segment.tokens.next
 
+            //Character object prefix @ must be highlighted same as the actual character
+            if current == "@" && next == "'" {
+                return true
+            }
+
+            //Character delimiter must be highlighted same as the actual character
+            if current == "'" {
+                return true
+            }
+
+            //Character object literal format is @'characterhere'
             return segment.tokens.previous == "'" && segment.tokens.next == "'"
+        }
+    }
+
+    public func isDelimiter(_ delimiterA: Character, mergableWith delimiterB: Character) -> Bool {
+        switch (delimiterA, delimiterB) {
+        case ("'", ";"):
+            //Cannot be merged,
+            return false
+        default:
+            return true
         }
     }
 }
