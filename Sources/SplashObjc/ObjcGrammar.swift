@@ -15,11 +15,12 @@ public struct ObjcGrammar: Grammar {
         self.delimiters = delimiters
 
         syntaxRules = [
+            PreprocessingRule(),
             StringLiteral(),
             NumberRule(),
             CharacterLiteralRule(),
             TypeRule(),
-            KeywordRule()
+            KeywordRule(),
         ]
     }
 
@@ -158,6 +159,31 @@ public struct ObjcGrammar: Grammar {
 
             //Character object literal format is @'characterhere'
             return segment.tokens.previous == "'" && segment.tokens.next == "'"
+        }
+    }
+
+    struct PreprocessingRule: SyntaxRule {
+        var tokenType: TokenType { return .preprocessing }
+
+        private let preprocessorDirective: Set<String> = [
+            "#define", "#include", "undef", "ifdef", "ifndef",
+            "#if", "#endif", "#elif", "#else",
+            "#error", "#pragma"
+        ]
+
+        func matches(_ segment: Segment) -> Bool {
+            if preprocessorDirective.contains(segment.tokens.current) {
+                return true
+            }
+
+            //Everything on the preprocessor directive line is highlighted the same way
+            for directive in preprocessorDirective {
+                if segment.tokens.onSameLine.contains(directive) {
+                    return true
+                }
+            }
+
+            return false
         }
     }
 
