@@ -166,7 +166,7 @@ public struct ObjcGrammar: Grammar {
         var tokenType: TokenType { return .preprocessing }
 
         private let preprocessorDirective: Set<String> = [
-            "#define", "#include", "undef", "ifdef", "ifndef",
+            "#define", "#include", "#import", "undef", "ifdef", "ifndef",
             "#if", "#endif", "#elif", "#else",
             "#error", "#pragma"
         ]

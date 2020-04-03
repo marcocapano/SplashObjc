@@ -44,4 +44,24 @@ class PreprocessorTests: XCTestCase {
             .token("@\"someString\"", .preprocessing)
         ])
     }
+
+    func testImportFoundation() {
+        let components = highlighter.highlight("#import <Foundation/Foundation.h>")
+
+        XCTAssertEqual(components, [
+            .token("#import", .preprocessing),
+            .whitespace(" "),
+            .token("<Foundation/Foundation.h>", .preprocessing)
+        ])
+    }
+
+    func testImportHeader() {
+        let components = highlighter.highlight("#import \"someHeaderFile\".h")
+
+        XCTAssertEqual(components, [
+            .token("#import", .preprocessing),
+            .whitespace(" "),
+            .token("\"someHeaderFile\".h", .preprocessing)
+        ])
+    }
 }
