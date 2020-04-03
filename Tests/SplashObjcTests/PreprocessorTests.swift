@@ -34,14 +34,14 @@ class PreprocessorTests: XCTestCase {
     }
 
     func testDefineString() {
-        let components = highlighter.highlight("#define MAX_ARRAY_LENGTH 20")
+        let components = highlighter.highlight("#define kString @\"someString\"")
 
         XCTAssertEqual(components, [
             .token("#define", .preprocessing),
             .whitespace(" "),
-            .token("MAX_ARRAY_LENGTH", .preprocessing),
+            .token("kString", .preprocessing),
             .whitespace(" "),
-            .token("20", .preprocessing)
+            .token("@\"someString\"", .preprocessing)
         ])
     }
 }
