@@ -21,26 +21,7 @@ class FunctionsTests: XCTestCase {
         highlighter = SyntaxHighlighter(format: format, grammar: ObjcGrammar())
     }
 
-    func testAllocInit() {
-        let components = highlighter.highlight("self.view = [UIView alloc] init];")
-
-        XCTAssertEqual(components, [
-            .token("self", .keyword),
-            .plainText("."),
-            .token("view", .property),
-            .whitespace(" "),
-            .plainText("="),
-            .whitespace(" "),
-            .plainText("["),
-            .token("UIView", .type),
-            .whitespace(" "),
-            .token("alloc", .call),
-            .plainText("]"),
-            .whitespace(" "),
-            .token("init", .call),
-            .plainText("];")
-        ])
-    }
+    //MARK: Functions Declaration
 
     func testFunctionDeclarationNoArguments() {
         let components = highlighter.highlight("- (void)someMethod;")
@@ -54,6 +35,56 @@ class FunctionsTests: XCTestCase {
         ])
     }
 
+    func testFunctionDeclarationWithOneObjectArgument() {
+        let components = highlighter.highlight("- (NSString *)titleForArticle:(Article *)article;")
+
+        XCTAssertEqual(components, [
+            .plainText("-"),
+            .whitespace(" "),
+            .plainText("("),
+            .token("NSString", .type),
+            .whitespace(" "),
+            .plainText("*)titleForArticle:("),
+            .token("Article", .type),
+            .whitespace(" "),
+            .plainText("*)article;"),
+        ])
+    }
+
+    func testFunctionDeclarationWithOnePrimitiveArgument() {
+        let components = highlighter.highlight("- (NSString *)titleForRank:(int)rank;")
+
+        XCTAssertEqual(components, [
+            .plainText("-"),
+            .whitespace(" "),
+            .plainText("("),
+            .token("NSString", .type),
+            .whitespace(" "),
+            .plainText("*)titleForRank:("),
+            .token("int", .keyword),
+            .plainText(")rank;"),
+        ])
+    }
+
+    func testFunctionDeclarationWithMultipleArguments() {
+        let components = highlighter.highlight("- (int)max:(int)num1 andNum2:(int)num2;")
+
+        XCTAssertEqual(components, [
+            .plainText("-"),
+            .whitespace(" "),
+            .plainText("("),
+            .token("int", .keyword),
+            .plainText(")max:("),
+            .token("int", .keyword),
+            .plainText(")num1"),
+            .whitespace(" "),
+            .plainText("andNum2:("),
+            .token("int", .keyword),
+            .plainText(")num2;")
+        ])
+    }
+
+    //MARK: Functions Definition
     func testFunctionDefinitionNoArguments() {
         let components = highlighter.highlight("""
         - (void)someMethod {
@@ -80,22 +111,6 @@ class FunctionsTests: XCTestCase {
             .plainText(";"),
             .whitespace("\n"),
             .plainText("}")
-        ])
-    }
-
-    func testFunctionDeclarationWithOneObjectArgument() {
-        let components = highlighter.highlight("- (NSString *)titleForArticle:(Article *)article;")
-
-        XCTAssertEqual(components, [
-            .plainText("-"),
-            .whitespace(" "),
-            .plainText("("),
-            .token("NSString", .type),
-            .whitespace(" "),
-            .plainText("*)titleForArticle:("),
-            .token("Article", .type),
-            .whitespace(" "),
-            .plainText("*)article;"),
         ])
     }
 
@@ -129,21 +144,6 @@ class FunctionsTests: XCTestCase {
         ])
     }
 
-    func testFunctionDeclarationWithOnePrimitiveArgument() {
-        let components = highlighter.highlight("- (NSString *)titleForRank:(int)rank;")
-
-        XCTAssertEqual(components, [
-            .plainText("-"),
-            .whitespace(" "),
-            .plainText("("),
-            .token("NSString", .type),
-            .whitespace(" "),
-            .plainText("*)titleForRank:("),
-            .token("int", .keyword),
-            .plainText(")rank;"),
-        ])
-    }
-
     func testFunctionDefinitionWithOnePrimitiveArgument() {
         let components = highlighter.highlight("""
         - (NSString *)titleForRank:(int)rank {
@@ -169,24 +169,6 @@ class FunctionsTests: XCTestCase {
             .plainText(";"),
             .whitespace("\n"),
             .plainText("}")
-        ])
-    }
-
-    func testFunctionDeclarationWithMultipleArguments() {
-        let components = highlighter.highlight("- (int)max:(int)num1 andNum2:(int)num2;")
-
-        XCTAssertEqual(components, [
-            .plainText("-"),
-            .whitespace(" "),
-            .plainText("("),
-            .token("int", .keyword),
-            .plainText(")max:("),
-            .token("int", .keyword),
-            .plainText(")num1"),
-            .whitespace(" "),
-            .plainText("andNum2:("),
-            .token("int", .keyword),
-            .plainText(")num2;")
         ])
     }
 
@@ -241,6 +223,80 @@ class FunctionsTests: XCTestCase {
             .plainText("}"),
             .whitespace("\n"),
             .plainText("}")
+        ])
+    }
+
+    //MARK: Function Calls
+
+    func testCallFunctionWithoutArguments() {
+        let components = highlighter.highlight("[object callFunction];")
+
+        XCTAssertEqual(components, [
+            .plainText("[object"),
+            .whitespace(" "),
+            .token("callFunction", .call),
+            .plainText("];")
+        ])
+    }
+
+    func testCallFunctionWithOneArguments() {
+        let components = highlighter.highlight("[object callFunctionWith:argument];")
+
+        XCTAssertEqual(components, [
+            .plainText("[object"),
+            .whitespace(" "),
+            .token("callFunctionWith", .call),
+            .plainText(":argument];")
+        ])
+    }
+
+    func testCallFunctionWithMoreArguments() {
+        let components = highlighter.highlight("[object callFunctionWith:argument1 andArgumentTwo:argumentTwo];")
+
+        XCTAssertEqual(components, [
+            .plainText("[object"),
+            .whitespace(" "),
+            .token("callFunctionWith", .call),
+            .plainText(":argument1"),
+            .whitespace(" "),
+            .token("andArgumentTwo", .call),
+            .plainText(":argumentTwo];")
+        ])
+    }
+
+    func testNestedCallsNoArguments() {
+        let components = highlighter.highlight("self.view = [UIView alloc] init];")
+
+        XCTAssertEqual(components, [
+            .token("self", .keyword),
+            .plainText("."),
+            .token("view", .property),
+            .whitespace(" "),
+            .plainText("="),
+            .whitespace(" "),
+            .plainText("["),
+            .token("UIView", .type),
+            .whitespace(" "),
+            .token("alloc", .call),
+            .plainText("]"),
+            .whitespace(" "),
+            .token("init", .call),
+            .plainText("];")
+        ])
+    }
+
+    func testNestedCallsWithArguments() {
+        let components = highlighter.highlight("[NSMutableArray arrayWithArray:[userDefaults arrayForKey:kArrayKey]];")
+
+        XCTAssertEqual(components, [
+            .plainText("["),
+            .token("NSMutableArray", .type),
+            .whitespace(" "),
+            .token("arrayWithArray", .call),
+            .plainText(":[userDefaults"),
+            .whitespace(" "),
+            .token("arrayForKey", .call),
+            .plainText(":kArrayKey]];"),
         ])
     }
 }

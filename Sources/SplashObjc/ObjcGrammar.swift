@@ -120,7 +120,12 @@ public struct ObjcGrammar: Grammar {
         var tokenType: TokenType { return .call }
 
         func matches(_ segment: Segment) -> Bool {
-            guard let previous = segment.tokens.previous, !declarationKeywords.contains(previous) else {
+            guard let previous = segment.tokens.previous,
+                //Prevent function arguments from being treated as function call
+                previous != ":",
+
+                //In @interface Person: NSObject, Person should not be considered a call
+                !declarationKeywords.contains(previous) else {
                 return false
             }
 
@@ -234,6 +239,10 @@ public struct ObjcGrammar: Grammar {
         case ("'", ";"):
             return false
         case ("]", ";"):
+            return false
+        case (":", "["):
+            //Prevents : and [ from being merged in [NSMutableArray arrayWithArray:[arrayOfArrays firstObject]]
+            //Thus allowing result of function call to be used as a function parameter.
             return false
         default:
             return true
