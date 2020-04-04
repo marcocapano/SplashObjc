@@ -1,5 +1,5 @@
 //
-//  Property.swift
+//  PropertiesTests.swift
 //  
 //
 //  Created by Marco Capano on 04/04/2020.
@@ -9,7 +9,7 @@ import XCTest
 import Splash
 @testable import SplashObjc
 
-class PropertyTests: XCTestCase {
+class PropertiesTests: XCTestCase {
     private(set) var highlighter: SyntaxHighlighter<OutputFormatMock>!
     private(set) var builder: OutputBuilderMock!
 

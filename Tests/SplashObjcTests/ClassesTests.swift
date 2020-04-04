@@ -1,5 +1,5 @@
 //
-//  DeclarationTests.swift
+//  ClassesTests.swift
 //
 //
 //  Created by Marco Capano on 01/04/2020.
@@ -9,7 +9,7 @@ import XCTest
 import Splash
 @testable import SplashObjc
 
-class DeclarationTests: XCTestCase {
+class ClassesTests: XCTestCase {
     private(set) var highlighter: SyntaxHighlighter<OutputFormatMock>!
     private(set) var builder: OutputBuilderMock!
 
