@@ -9,7 +9,7 @@ import XCTest
 import Splash
 @testable import SplashObjc
 
-class LiteralTests: XCTestCase {
+class LiteralsTests: XCTestCase {
     private(set) var highlighter: SyntaxHighlighter<OutputFormatMock>!
     private(set) var builder: OutputBuilderMock!
 

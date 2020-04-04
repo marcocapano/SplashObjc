@@ -20,6 +20,7 @@ public struct ObjcGrammar: Grammar {
             NumberRule(),
             CharacterLiteralRule(),
             TypeRule(),
+            PropertyRule(),
             KeywordRule(),
         ]
     }
@@ -184,6 +185,26 @@ public struct ObjcGrammar: Grammar {
             }
 
             return false
+        }
+    }
+
+    struct PropertyRule: SyntaxRule {
+        var tokenType: TokenType { return .property }
+
+        func matches(_ segment: Segment) -> Bool {
+            guard !segment.tokens.onSameLine.isEmpty else {
+                return false
+            }
+
+            guard let firstCharacter = segment.tokens.current.first, firstCharacter.isLetter else {
+                return false
+            }
+
+            guard segment.tokens.previous == "." else {
+                return false
+            }
+
+            return segment.tokens.onSameLine.first != "#import"
         }
     }
 
