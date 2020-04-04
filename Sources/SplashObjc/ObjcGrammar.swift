@@ -20,6 +20,7 @@ public struct ObjcGrammar: Grammar {
             NumberRule(),
             CharacterLiteralRule(),
             TypeRule(),
+            CallRule(),
             PropertyRule(),
             KeywordRule(),
         ]
@@ -108,6 +109,26 @@ public struct ObjcGrammar: Grammar {
             let isCapitalized = firstCharacter != firstCharacter.lowercased()
 
             guard isCapitalized else {
+                return false
+            }
+
+            return true
+        }
+    }
+
+    struct CallRule: SyntaxRule {
+        var tokenType: TokenType { return .call }
+
+        func matches(_ segment: Segment) -> Bool {
+            guard let previous = segment.tokens.previous, !declarationKeywords.contains(previous) else {
+                return false
+            }
+
+            guard segment.tokens.next == "]" || segment.tokens.next == ":" else {
+                return false
+            }
+
+            guard let firstCharacter = segment.tokens.current.first, firstCharacter.isLetter else {
                 return false
             }
 
@@ -211,7 +232,8 @@ public struct ObjcGrammar: Grammar {
     public func isDelimiter(_ delimiterA: Character, mergableWith delimiterB: Character) -> Bool {
         switch (delimiterA, delimiterB) {
         case ("'", ";"):
-            //Cannot be merged,
+            return false
+        case ("]", ";"):
             return false
         default:
             return true
