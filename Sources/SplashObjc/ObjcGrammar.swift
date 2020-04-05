@@ -11,6 +11,7 @@ public struct ObjcGrammar: Grammar {
         delimiters.remove("\"")
         delimiters.remove("#")
         delimiters.remove("@")
+        delimiters.remove("%")
         self.delimiters = delimiters
 
         syntaxRules = [
@@ -62,12 +63,16 @@ public struct ObjcGrammar: Grammar {
         var tokenType: TokenType { return .string }
 
         func matches(_ segment: Segment) -> Bool {
-            if segment.tokens.current.hasPrefix(#"@""#) &&
+            if segment.tokens.current.hasPrefix("@\"") &&
                segment.tokens.current.hasSuffix("\"") {
                 return true
             }
 
-            return false
+            guard segment.isWithinStringLiteral(withStart: "@\"", end: "\"") else {
+                return false
+            }
+
+            return true
         }
     }
 
@@ -318,5 +323,41 @@ extension String {
         return withoutAtSign.hasPrefix("'")
             && withoutAtSign.hasSuffix("'")
             && withoutAtSign.count > 2
+    }
+}
+
+extension Segment {
+    func isWithinStringLiteral(withStart start: String, end: String) -> Bool {
+        if tokens.current.hasPrefix(start) {
+            return true
+        }
+
+        if tokens.current.hasSuffix(end) {
+            return true
+        }
+
+        var markerCounts = (start: 0, end: 0)
+
+        for token in tokens.onSameLine {
+            if token == start {
+                if start != end || markerCounts.start == markerCounts.end {
+                    markerCounts.start += 1
+                } else {
+                    markerCounts.end += 1
+                }
+            } else if token == end && start != end {
+                markerCounts.end += 1
+            } else {
+                if token.hasPrefix(start) {
+                    markerCounts.start += 1
+                }
+
+                if token.hasSuffix(end) {
+                    markerCounts.end += 1
+                }
+            }
+        }
+
+        return markerCounts.start != markerCounts.end
     }
 }
