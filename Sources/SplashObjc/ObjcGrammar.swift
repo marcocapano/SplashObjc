@@ -10,19 +10,19 @@ public struct ObjcGrammar: Grammar {
         delimiters.remove("_")
         delimiters.remove("\"")
         delimiters.remove("#")
-        delimiters.remove("*")
         delimiters.remove("@")
         self.delimiters = delimiters
 
         syntaxRules = [
             PreprocessingRule(),
+            CommentRule(),
             StringLiteral(),
             NumberRule(),
             CharacterLiteralRule(),
             TypeRule(),
             CallRule(),
             PropertyRule(),
-            KeywordRule(),
+            KeywordRule()
         ]
     }
 
@@ -214,6 +214,35 @@ public struct ObjcGrammar: Grammar {
         }
     }
 
+    struct CommentRule: SyntaxRule {
+        var tokenType: TokenType { return .comment }
+
+        func matches(_ segment: Segment) -> Bool {
+            if segment.tokens.current.hasPrefix("/*") {
+                if segment.tokens.current.hasSuffix("*/") {
+                    return true
+                }
+            }
+
+            if segment.tokens.current.hasPrefix("//") {
+                return true
+            }
+
+            for singleLineCommentToken in ["//", "///"] {
+                if segment.tokens.onSameLine.contains(singleLineCommentToken) {
+                    return true
+                }
+            }
+
+            if ["/*", "/**", "*/"].contains(segment.tokens.current) {
+                return true
+            }
+
+            let multiLineStartCount = segment.tokens.count(of: "/*") + segment.tokens.count(of: "/**")
+            return multiLineStartCount != segment.tokens.count(of: "*/")
+        }
+    }
+
     struct PropertyRule: SyntaxRule {
         var tokenType: TokenType { return .property }
 
@@ -239,11 +268,20 @@ public struct ObjcGrammar: Grammar {
         case ("'", ";"):
             return false
         case ("]", ";"):
+            //Prevent function calls at the end of a line from being merged with semicolon
             return false
         case (":", "["):
             //Prevents : and [ from being merged in [NSMutableArray arrayWithArray:[arrayOfArrays firstObject]]
             //Thus allowing result of function call to be used as a function parameter.
             return false
+        case (";", "/"):
+            //Prevents comments right after punctuation to be merged with the punctuation.
+            //In the following line of code, ;// would be merged together as plainText otherwise
+            //int n = 5;// number
+            return false
+        case ("/", "/"), ("/", "*"), ("*", "/"):
+            //Enable delimiters to form comment symbols
+            return true
         default:
             return true
         }
