@@ -1,5 +1,5 @@
+# SplashObjc
 <p align="center">
-    <img src="https://img.shields.io/badge/Swift-5.0-orange.svg" />
     <a href="https://swift.org/package-manager">
         <img src="https://img.shields.io/badge/spm-compatible-brightgreen.svg?style=flat" alt="Swift Package Manager" />
     </a>
@@ -9,7 +9,7 @@
     </a>
 </p>
 
-This is **SplashObjc**, an Objective-C syntax highlighter based on [Splash](https://github.com/JohnSundell/Splash), a Swift Syntax Highlighter. It can be used to generate HTML, and Images from your Objective-C code.
+This is **SplashObjc**, an Objective-C syntax highlighter based on [Splash](https://github.com/JohnSundell/Splash), a Swift syntax highlighter. It can be used to generate HTML and Images from your Objective-C code.
 
 ## Usage
 
@@ -18,7 +18,7 @@ SplashObjc can be used as a Swift Package, or you can use one of the command lin
 To install using the Swift Package Manager:
 
 ```swift
-.package(url: "https://github.com/marcocapano/SplashObjc", from: .branch("master)")
+.package(url: "https://github.com/marcocapano/SplashObjc", from: .branch("master"))
 ```
 
 
@@ -46,7 +46,7 @@ When rendering your outputted html, make sure to wrap your output code in the `<
 <!DOCTYPE html>
 <head>
     <title>Hello World</title>
-    <link rel="stylesheet" href="sundellsColors.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <pre>
@@ -128,5 +128,5 @@ If you like this project, I strongly recommend you try creating support for anot
 If you'd like to contribute or if you see any missing thing or error, please do not esitate to contact me or open a PR!
 
 ### Contacts
-marco24capano@icloud.com
-marcocapano.dev
+[marco24capano@icloud.com](emailto:marco24capano@icloud.com)
+[marcocapano.dev](https://marcocapano.dev)
