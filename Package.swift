@@ -20,6 +20,18 @@ let package = Package(
         .target(
             name: "SplashObjc",
             dependencies: ["Splash"]),
+        .target(
+            name: "SplashObjcHTMLGen",
+            dependencies: ["SplashObjc", "Splash"]
+        ),
+        .target(
+            name: "SplashObjcImageGen",
+            dependencies: ["SplashObjc", "Splash"]
+        ),
+        .target(
+            name: "SplashObjcTokenizer",
+            dependencies: ["SplashObjc", "Splash"]
+        ),
         .testTarget(
             name: "SplashObjcTests",
             dependencies: ["SplashObjc"]),
