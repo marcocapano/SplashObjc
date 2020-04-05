@@ -44,9 +44,10 @@ public struct ObjcGrammar: Grammar {
         //---
         "@synchronized",
 
-        //----
+        //Property Attributes
         "nonatomic", "atomic", "readwrite", "readonly", "assign", "copy",
-        "nullable", "nonnull", "strong", "weak", "unsafe_unretained", "_Nonnull",
+        "strong", "weak", "unsafe_unretained",
+        "_Nonnull", "_Nullable", "nullable", "nonnull", "__block"
 
         //---
         "self", "super",
