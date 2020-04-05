@@ -53,7 +53,7 @@ public struct ObjcGrammar: Grammar {
 
         //Control Flow
         "return", "if", "else", "continue", "switch", "case", "break", "default",
-        "@try", "@catch", "do", "while",
+        "@try", "@catch", "do", "while", "for",
 
         //Values
         "YES", "NO", "nil", "NULL"
@@ -125,6 +125,10 @@ public struct ObjcGrammar: Grammar {
         var tokenType: TokenType { return .call }
 
         func matches(_ segment: Segment) -> Bool {
+            guard !segment.tokens.onSameLine.isEmpty else {
+                return false
+            }
+
             guard let previous = segment.tokens.previous,
                 //Prevent function arguments from being treated as function call
                 previous != ":",
@@ -283,6 +287,15 @@ public struct ObjcGrammar: Grammar {
             //Prevents comments right after punctuation to be merged with the punctuation.
             //In the following line of code, ;// would be merged together as plainText otherwise
             //int n = 5;// number
+            return false
+        case ("]", ")"):
+            //Prevents ] and ) from merging in the following line,
+            //to allow return value of a call to be used in a boolean check
+            //if ([self call]) {}
+            return false
+        case (_, ":"):
+            //Prevent any delimiter from merging with :
+            //Example: case 'a':
             return false
         default:
             return true
