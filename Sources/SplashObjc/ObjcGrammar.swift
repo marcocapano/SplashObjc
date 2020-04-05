@@ -279,9 +279,6 @@ public struct ObjcGrammar: Grammar {
             //In the following line of code, ;// would be merged together as plainText otherwise
             //int n = 5;// number
             return false
-        case ("/", "/"), ("/", "*"), ("*", "/"):
-            //Enable delimiters to form comment symbols
-            return true
         default:
             return true
         }
