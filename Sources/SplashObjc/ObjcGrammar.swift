@@ -10,9 +10,7 @@ public struct ObjcGrammar: Grammar {
         delimiters.remove("_")
         delimiters.remove("\"")
         delimiters.remove("#")
-        delimiters.remove("*")
         delimiters.remove("@")
-//        delimiters.remove("*")
         self.delimiters = delimiters
 
         syntaxRules = [
@@ -220,28 +218,24 @@ public struct ObjcGrammar: Grammar {
         var tokenType: TokenType { return .comment }
 
         func matches(_ segment: Segment) -> Bool {
-            let previous = segment.tokens.previous
-            let current = segment.tokens.current
-            let next = segment.tokens.next
-
-            if current == "/" {
-                if next == "*" {
+            if segment.tokens.current.hasPrefix("/*") {
+                if segment.tokens.current.hasSuffix("*/") {
                     return true
                 }
             }
 
-            if current.hasPrefix("//") {
+            if segment.tokens.current.hasPrefix("//") {
                 return true
             }
 
-            if current == "*" && previous == "/" {
-                return true
-            }
-
-            for commentSymbol in ["//", "///"] {
-                if segment.tokens.onSameLine.contains(commentSymbol) {
+            for singleLineCommentToken in ["//", "///"] {
+                if segment.tokens.onSameLine.contains(singleLineCommentToken) {
                     return true
                 }
+            }
+
+            if ["/*", "/**", "*/"].contains(segment.tokens.current) {
+                return true
             }
 
             let multiLineStartCount = segment.tokens.count(of: "/*") + segment.tokens.count(of: "/**")
@@ -284,6 +278,8 @@ public struct ObjcGrammar: Grammar {
             //In the following line of code, ;// would be merged together as plainText otherwise
             //int n = 5;// number
             return false
+        case ("/", "/"), ("/", "*"), ("*", "/"):
+            return true
         default:
             return true
         }
