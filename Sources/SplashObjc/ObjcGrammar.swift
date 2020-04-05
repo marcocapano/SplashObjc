@@ -268,6 +268,7 @@ public struct ObjcGrammar: Grammar {
         case ("'", ";"):
             return false
         case ("]", ";"):
+            //Prevent function calls at the end of a line from being merged with semicolon
             return false
         case (":", "["):
             //Prevents : and [ from being merged in [NSMutableArray arrayWithArray:[arrayOfArrays firstObject]]
@@ -279,6 +280,7 @@ public struct ObjcGrammar: Grammar {
             //int n = 5;// number
             return false
         case ("/", "/"), ("/", "*"), ("*", "/"):
+            //Enable delimiters to form comment symbols
             return true
         default:
             return true
