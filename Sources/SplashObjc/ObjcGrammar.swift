@@ -12,17 +12,19 @@ public struct ObjcGrammar: Grammar {
         delimiters.remove("#")
         delimiters.remove("*")
         delimiters.remove("@")
+//        delimiters.remove("*")
         self.delimiters = delimiters
 
         syntaxRules = [
             PreprocessingRule(),
+            CommentRule(),
             StringLiteral(),
             NumberRule(),
             CharacterLiteralRule(),
             TypeRule(),
             CallRule(),
             PropertyRule(),
-            KeywordRule(),
+            KeywordRule()
         ]
     }
 
@@ -214,6 +216,39 @@ public struct ObjcGrammar: Grammar {
         }
     }
 
+    struct CommentRule: SyntaxRule {
+        var tokenType: TokenType { return .comment }
+
+        func matches(_ segment: Segment) -> Bool {
+            let previous = segment.tokens.previous
+            let current = segment.tokens.current
+            let next = segment.tokens.next
+
+            if current == "/" {
+                if next == "*" {
+                    return true
+                }
+            }
+
+            if current.hasPrefix("//") {
+                return true
+            }
+
+            if current == "*" && previous == "/" {
+                return true
+            }
+
+            for commentSymbol in ["//", "///"] {
+                if segment.tokens.onSameLine.contains(commentSymbol) {
+                    return true
+                }
+            }
+
+            let multiLineStartCount = segment.tokens.count(of: "/*") + segment.tokens.count(of: "/**")
+            return multiLineStartCount != segment.tokens.count(of: "*/")
+        }
+    }
+
     struct PropertyRule: SyntaxRule {
         var tokenType: TokenType { return .property }
 
@@ -243,6 +278,11 @@ public struct ObjcGrammar: Grammar {
         case (":", "["):
             //Prevents : and [ from being merged in [NSMutableArray arrayWithArray:[arrayOfArrays firstObject]]
             //Thus allowing result of function call to be used as a function parameter.
+            return false
+        case (";", "/"):
+            //Prevents comments right after punctuation to be merged with the punctuation.
+            //In the following line of code, ;// would be merged together as plainText otherwise
+            //int n = 5;// number
             return false
         default:
             return true
