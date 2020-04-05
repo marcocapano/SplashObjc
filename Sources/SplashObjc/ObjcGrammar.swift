@@ -34,9 +34,9 @@ public struct ObjcGrammar: Grammar {
     static let keywords: Set<String> = [
         "static", "const",
 
-        //Primitive types
+        //Types
         "int", "double", "float", "char", "struct", "void", "BOOL",
-        "instancetype", "id", "long", "short", "unsigned",
+        "instancetype", "id", "long", "short", "unsigned", "typedef",
 
         //Objc runtime
         "SEL", "IMP", "@selector",
@@ -46,7 +46,7 @@ public struct ObjcGrammar: Grammar {
 
         //----
         "nonatomic", "atomic", "readwrite", "readonly", "assign", "copy",
-        "nullable", "nonnull", "strong", "weak", "unsafe_unretained",
+        "nullable", "nonnull", "strong", "weak", "unsafe_unretained", "_Nonnull",
 
         //---
         "self", "super",
@@ -296,6 +296,10 @@ public struct ObjcGrammar: Grammar {
         case (_, ":"):
             //Prevent any delimiter from merging with :
             //Example: case 'a':
+            return false
+        case (":", "^"):
+            //Prevents : and ^ from being merged when passing a block as a method argument
+            //[someObject someMethodThatTakesABlock:^ReturnType (parameters) {...}];
             return false
         default:
             return true
