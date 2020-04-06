@@ -20,10 +20,11 @@ public struct ObjcGrammar: Grammar {
             StringLiteral(),
             NumberRule(),
             CharacterLiteralRule(),
+            MacroRule(),
             TypeRule(),
             CallRule(),
             PropertyRule(),
-            KeywordRule()
+            KeywordRule(),
         ]
     }
 
@@ -41,6 +42,9 @@ public struct ObjcGrammar: Grammar {
 
         //Objc runtime
         "SEL", "IMP", "@selector",
+
+        //Forward Declarations
+        "@class", "@protocol",
 
         //---
         "@synchronized",
@@ -84,6 +88,24 @@ public struct ObjcGrammar: Grammar {
         func matches(_ segment: Segment) -> Bool {
             return keywords.contains(segment.tokens.current)
                 || declarationKeywords.contains(segment.tokens.current)
+        }
+    }
+
+
+    struct MacroRule: SyntaxRule {
+        var tokenType: TokenType { return .preprocessing }
+
+        func matches(_ segment: Segment) -> Bool {
+            //Format: MAX, NS_ENUM etc..
+            let matchesMacroFormat = segment.tokens.current.allSatisfy { character in
+                return character == "_" || character.isLetter
+            }
+
+            guard matchesMacroFormat else {
+                return false
+            }
+
+            return segment.tokens.current == segment.tokens.current.uppercased()
         }
     }
 
