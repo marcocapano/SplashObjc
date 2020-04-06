@@ -12,6 +12,9 @@
 This is **SplashObjc**, an Objective-C syntax highlighter based on [Splash](https://github.com/JohnSundell/Splash), a Swift syntax highlighter. It can be used to generate HTML and Images and `NSAttributedString`s from your Objective-C code.
 
 It is already quite capable, with support for blocks, macros, functions, control statements, classes, procolocols, properties, object literals and more.
+See the following example image, generated with it:
+
+<img src="Images/NSLock.png" max-width="90%" alt="NSLock code sample" />
 
 ## Usage
 
