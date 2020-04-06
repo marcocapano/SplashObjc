@@ -27,7 +27,7 @@ SplashObjc can be used as a Swift Package, or you can use one of the command lin
 To install using the Swift Package Manager:
 
 ```swift
-.package(url: "https://github.com/marcocapano/SplashObjc", from: "0.2.1"))
+.package(url: "https://github.com/marcocapano/SplashObjc", from: "0.3.2"))
 ```
 
 The command line tools mimic the ones provided by Splash's swift version, so that if you know how to use that already, using these should be easy.
