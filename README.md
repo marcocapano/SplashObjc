@@ -21,6 +21,7 @@ To install using the Swift Package Manager:
 .package(url: "https://github.com/marcocapano/SplashObjc", from: "0.2.1"))
 ```
 
+The command line tools mimic the ones provided by Splash's swift version, so that if you know how to use that already, using these should be easy.
 
 #### SplashObjcHTMLGen
 
@@ -103,6 +104,8 @@ let highlighter = SyntaxHighlighter(format: HTMLOutputFormat(), grammar: ObjcGra
 let html = highlighter.highlight("[UIView alloc] init];")
 ```
 
+You can even create your own custom  `OutputFormat`.
+
 ## Installation
 
 ### 🛠 Command line tools
@@ -122,11 +125,12 @@ $ make install
 
 # Acknowledgements
 
-This project could now exist if the underlying tokenizing tool hadn't been created by [John Sundell]((https://github.com/JohnSundell/)). 
-If you like this project, I strongly recommend you try creating support for another language. John has made a really great job making the code readable and easy to follow.
+This project could not exist without the work on Splash by [John Sundell](https://github.com/JohnSundell/). 
+If you like this project, I strongly recommend you try creating support for another language. John has made a really great job making the code readable and easy to work with.
 
-If you'd like to contribute or if you see any missing thing or error, please do not esitate to contact me or open a PR!
+If you'd like to contribute or if you see any missing thing or mistake, please do not esitate to contact me or open a PR!
 
 ### Contacts
 [marco24capano@icloud.com](mailto:marco24capano@icloud.com)
+
 [marcocapano.dev](https://marcocapano.dev)
