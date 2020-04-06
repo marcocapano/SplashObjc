@@ -37,6 +37,7 @@ public struct ObjcGrammar: Grammar {
         //Types
         "int", "double", "float", "char", "struct", "void", "BOOL",
         "instancetype", "id", "long", "short", "unsigned", "typedef",
+        "enum",
 
         //Objc runtime
         "SEL", "IMP", "@selector",
@@ -47,7 +48,7 @@ public struct ObjcGrammar: Grammar {
         //Property Attributes
         "nonatomic", "atomic", "readwrite", "readonly", "assign", "copy",
         "strong", "weak", "unsafe_unretained",
-        "_Nonnull", "_Nullable", "nullable", "nonnull", "__block"
+        "_Nonnull", "_Nullable", "nullable", "nonnull", "__block",
 
         //---
         "self", "super",
