@@ -18,7 +18,7 @@ SplashObjc can be used as a Swift Package, or you can use one of the command lin
 To install using the Swift Package Manager:
 
 ```swift
-.package(url: "https://github.com/marcocapano/SplashObjc", from: "0.1.0"))
+.package(url: "https://github.com/marcocapano/SplashObjc", from: "0.2.1"))
 ```
 
 
