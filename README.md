@@ -1,5 +1,7 @@
 # SplashObjc
-<img src="Images/ReadmeHeader.png" min-width="100%" alt="SplashObjc" />
+<p align="center">
+    <img src="Images/ReadmeHeader.png" min-width="100%" alt="SplashObjc" />
+</p>
 
 <p align="center">
     <a href="https://swift.org/package-manager">
@@ -130,6 +132,11 @@ Then install all the tools in your `/usr/local/bin` like this:
 ```
 $ make install
 ```
+
+# Coming Soon
+
+- SplashMarkdown port to SplashObjcMarkdown
+- Jekyll plugin to highlight code in your blog posts
 
 # Acknowledgements
 
