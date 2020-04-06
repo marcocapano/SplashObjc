@@ -105,6 +105,7 @@ Plain text: ];
 Since it comes as a package, once installed you can simply import it and start using it like this:
 
 ```swift
+import Splash
 import SplashObjc
 
 let highlighter = SyntaxHighlighter(format: HTMLOutputFormat(), grammar: ObjcGrammar())
