@@ -90,52 +90,41 @@ public struct ObjcGrammar: Grammar {
     struct TypeRule: SyntaxRule {
         var tokenType: TokenType { return .type }
 
-        private let enumMacros: Set<String> = [
-            "NS_ENUM", "NS_CLOSED_ENUM"
-        ]
-
         func matches(_ segment: Segment) -> Bool {
-            /*Prevent enum values from being highlighted as a Type in enum definitions like the following:
-             typedef NS_ENUM(NSUInteger, AccountType) {
-                 AccountTypeNew,
-                 AccountTypeExisting,
-                 AccountTypeUnknown
-             };
-
-             typedef enum {
-                 UITableViewCellStyleDefault,
-                 UITableViewCellStyleValue1,
-                 UITableViewCellStyleValue2,
-                 UITableViewCellStyleSubtitle
-             } UITableViewCellStyle;
-            */
             let isWithinBrackets = segment.tokens.count(of: "{") != segment.tokens.count(of: "}")
 
-            if let lastOpeningParenthesisIndex = segment.tokens.all.lastIndex(of: "(") {
-                let beforeLastOpeningParenthesis = segment.tokens.all.index(before: lastOpeningParenthesisIndex)
-                let tokenBeforeLastOpeningParenthesis = segment.tokens.all[beforeLastOpeningParenthesis]
-
-                if enumMacros.contains(tokenBeforeLastOpeningParenthesis) {
-                    if isWithinBrackets {
-                        return false
-                    }
+            /*
+             Prevent enum values from being highlighted as a Type in enum definitions like the following:
+             typedef NS_ENUM(NSUInteger, AccountType) {
+                AccountTypeNew,
+                AccountTypeExisting,
+                AccountTypeUnknown
+             };
+            */
+            if segment.lastToken(before: "(", isAnyOf: ["NS_ENUM", "NS_CLOSED_ENUM"]) {
+                if isWithinBrackets {
+                    return false
                 }
             }
 
-            if let lastOpeningBracketIndex = segment.tokens.all.lastIndex(of: "{") {
-                let beforeLastOpeningBracket = segment.tokens.all.index(before: lastOpeningBracketIndex)
-                let tokenBeforeLastOpeningBracket = segment.tokens.all[beforeLastOpeningBracket]
+            /*
+             Prevent enum values from being highlighted as a Type in enum definitions like the following:
+             typedef enum {
+                UITableViewCellStyleDefault,
+                UITableViewCellStyleValue1,
+                UITableViewCellStyleValue2,
+                UITableViewCellStyleSubtitle
+             } UITableViewCellStyle;
+            */
+            if segment.lastToken(before: "{", isAnyOf: ["enum"]) {
+                //Highlight enum cases as plain text
+                if isWithinBrackets {
+                    return false
+                }
 
-                if tokenBeforeLastOpeningBracket == "enum" {
-                    //Highlight enum cases as plain text
-                    if isWithinBrackets {
-                        return false
-                    }
-
-                    //Highlight the typedef name as plain text
-                    if segment.tokens.previous == "}" && segment.tokens.next == ";" {
-                        return false
-                    }
+                //Highlight the typedef name as plain text
+                if segment.tokens.previous == "}" && segment.tokens.next == ";" {
+                    return false
                 }
             }
 
@@ -431,5 +420,20 @@ extension Segment {
         }
 
         return markerCounts.start != markerCounts.end
+    }
+
+    func lastToken(before token: String, isAnyOf others: [String]) -> Bool {
+        let match = token
+
+        if let indexOfLastMatch = tokens.all.lastIndex(of: match) {
+            let indexOfTokenBeforeLastMatch = tokens.all.index(before: indexOfLastMatch)
+            let tokenBeforeLastMatch = tokens.all[indexOfTokenBeforeLastMatch]
+
+            if others.contains(tokenBeforeLastMatch) {
+                return true
+            }
+        }
+
+        return false
     }
 }
