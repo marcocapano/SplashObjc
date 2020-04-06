@@ -47,7 +47,7 @@ public struct ObjcGrammar: Grammar {
         "@class", "@protocol",
 
         //---
-        "@synchronized",
+        "@synchronized", "@private",
 
         //Property Attributes
         "nonatomic", "atomic", "readwrite", "readonly", "getter",
