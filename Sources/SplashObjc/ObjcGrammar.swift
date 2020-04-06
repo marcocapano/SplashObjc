@@ -90,9 +90,13 @@ public struct ObjcGrammar: Grammar {
     struct TypeRule: SyntaxRule {
         var tokenType: TokenType { return .type }
 
+        private let enumDeclarationKeywords: Set<String> = [
+            "enum", "NS_ENUM", "NS_CLOSED_ENUM"
+        ]
+
         func matches(_ segment: Segment) -> Bool {
             /*Prevent enum values from being highlighted as a Type in enum definitions like the following:
-             typedef enum {
+             typedef enum { //or typedef NS_ENUM etc..
                  UITableViewCellStyleDefault,
                  UITableViewCellStyleValue1,
                  UITableViewCellStyleValue2,
@@ -102,8 +106,9 @@ public struct ObjcGrammar: Grammar {
             if let lastOpeningBracketIndex = segment.tokens.all.lastIndex(of: "{") {
                 let isWithinBrackets = segment.tokens.count(of: "{") != segment.tokens.count(of: "}")
                 let beforeLastOpeningBracket = segment.tokens.all.index(lastOpeningBracketIndex, offsetBy: -1)
+                let tokenBeforeLastOpeningBracket = segment.tokens.all[beforeLastOpeningBracket]
 
-                if segment.tokens.all[beforeLastOpeningBracket] == "enum" {
+                if enumDeclarationKeywords.contains(tokenBeforeLastOpeningBracket) {
                     //Highlight enum cases as plain text
                     if isWithinBrackets {
                         return false
