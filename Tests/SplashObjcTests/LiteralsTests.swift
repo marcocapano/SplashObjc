@@ -246,4 +246,36 @@ class LiteralsTests: XCTestCase {
             .plainText("];")
         ])
     }
+
+    func testBoolLiterals() {
+        let components = highlighter.highlight("""
+        BOOL flagA = YES;
+        BOOL flagB = NO;
+        """)
+
+        XCTAssertEqual(components, [
+            .token("BOOL", .keyword),
+            .whitespace(" "),
+            .plainText("flagA"),
+            .whitespace(" "),
+            .plainText("="),
+            .whitespace(" "),
+            .token("YES", .keyword),
+            .plainText(";"),
+            .whitespace("\n"),
+            .token("BOOL", .keyword),
+            .whitespace(" "),
+            .plainText("flagB"),
+            .whitespace(" "),
+            .plainText("="),
+            .whitespace(" "),
+            .token("NO", .keyword),
+            .plainText(";")
+        ])
+    }
+
+    func testNULLIsHighlightedAsKeyword() {
+        let components = highlighter.highlight("NULL")
+        XCTAssertEqual(components, [.token("NULL", .keyword)])
+    }
 }

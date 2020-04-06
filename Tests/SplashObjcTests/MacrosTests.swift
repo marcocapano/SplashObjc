@@ -66,4 +66,16 @@ class MacrosTests: XCTestCase {
             .token("NSLocking", .type)
         ])
     }
+
+    func testAllUppercasesKeywordsAreNotTreatedAsMacros() {
+        let components = highlighter.highlight("- (BOOL)tryLock;")
+
+        XCTAssertEqual(components, [
+            .plainText("-"),
+            .whitespace(" "),
+            .plainText("("),
+            .token("BOOL", .keyword),
+            .plainText(")tryLock;")
+        ])
+    }
 }

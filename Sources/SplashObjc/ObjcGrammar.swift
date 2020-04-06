@@ -20,11 +20,11 @@ public struct ObjcGrammar: Grammar {
             StringLiteral(),
             NumberRule(),
             CharacterLiteralRule(),
+            KeywordRule(),
             MacroRule(),
             TypeRule(),
             CallRule(),
             PropertyRule(),
-            KeywordRule(),
         ]
     }
 
