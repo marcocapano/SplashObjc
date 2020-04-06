@@ -78,4 +78,68 @@ class EnumsTests: XCTestCase {
             .plainText("UITableViewCellStyle;")
         ])
     }
+
+    func testNSEnum() {
+        let components = highlighter.highlight("""
+        typedef NS_ENUM(NSUInteger, AccountType) {
+            AccountTypeNew,
+            AccountTypeExisting,
+            AccountTypeUnknown
+        };
+        """)
+
+        XCTAssertEqual(components, [
+            .token("typedef", .keyword),
+            .whitespace(" "),
+            .token("NS_ENUM", .preprocessing),
+            .plainText("("),
+            .token("NSUInteger", .type),
+            .plainText(","),
+            .whitespace(" "),
+            .token("AccountType", .type),
+            .plainText(")"),
+            .whitespace(" "),
+            .plainText("{"),
+            .whitespace("\n    "),
+            .plainText("AccountTypeNew,"),
+            .whitespace("\n    "),
+            .plainText("AccountTypeExisting,"),
+            .whitespace("\n    "),
+            .plainText("AccountTypeUnknown"),
+            .whitespace("\n"),
+            .plainText("};")
+        ])
+    }
+
+    func testNSClosedEnum() {
+        let components = highlighter.highlight("""
+        typedef NS_CLOSED_ENUM(NSUInteger, AccountType) {
+            AccountTypeNew,
+            AccountTypeExisting,
+            AccountTypeUnknown
+        };
+        """)
+
+        XCTAssertEqual(components, [
+            .token("typedef", .keyword),
+            .whitespace(" "),
+            .token("NS_CLOSED_ENUM", .preprocessing),
+            .plainText("("),
+            .token("NSUInteger", .type),
+            .plainText(","),
+            .whitespace(" "),
+            .token("AccountType", .type),
+            .plainText(")"),
+            .whitespace(" "),
+            .plainText("{"),
+            .whitespace("\n    "),
+            .plainText("AccountTypeNew,"),
+            .whitespace("\n    "),
+            .plainText("AccountTypeExisting,"),
+            .whitespace("\n    "),
+            .plainText("AccountTypeUnknown"),
+            .whitespace("\n"),
+            .plainText("};")
+        ])
+    }
 }

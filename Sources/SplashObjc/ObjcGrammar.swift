@@ -90,25 +90,43 @@ public struct ObjcGrammar: Grammar {
     struct TypeRule: SyntaxRule {
         var tokenType: TokenType { return .type }
 
-        private let enumDeclarationKeywords: Set<String> = [
-            "enum", "NS_ENUM", "NS_CLOSED_ENUM"
+        private let enumMacros: Set<String> = [
+            "NS_ENUM", "NS_CLOSED_ENUM"
         ]
 
         func matches(_ segment: Segment) -> Bool {
             /*Prevent enum values from being highlighted as a Type in enum definitions like the following:
-             typedef enum { //or typedef NS_ENUM etc..
+             typedef NS_ENUM(NSUInteger, AccountType) {
+                 AccountTypeNew,
+                 AccountTypeExisting,
+                 AccountTypeUnknown
+             };
+
+             typedef enum {
                  UITableViewCellStyleDefault,
                  UITableViewCellStyleValue1,
                  UITableViewCellStyleValue2,
                  UITableViewCellStyleSubtitle
              } UITableViewCellStyle;
             */
+            let isWithinBrackets = segment.tokens.count(of: "{") != segment.tokens.count(of: "}")
+
+            if let lastOpeningParenthesisIndex = segment.tokens.all.lastIndex(of: "(") {
+                let beforeLastOpeningParenthesis = segment.tokens.all.index(before: lastOpeningParenthesisIndex)
+                let tokenBeforeLastOpeningParenthesis = segment.tokens.all[beforeLastOpeningParenthesis]
+
+                if enumMacros.contains(tokenBeforeLastOpeningParenthesis) {
+                    if isWithinBrackets {
+                        return false
+                    }
+                }
+            }
+
             if let lastOpeningBracketIndex = segment.tokens.all.lastIndex(of: "{") {
-                let isWithinBrackets = segment.tokens.count(of: "{") != segment.tokens.count(of: "}")
-                let beforeLastOpeningBracket = segment.tokens.all.index(lastOpeningBracketIndex, offsetBy: -1)
+                let beforeLastOpeningBracket = segment.tokens.all.index(before: lastOpeningBracketIndex)
                 let tokenBeforeLastOpeningBracket = segment.tokens.all[beforeLastOpeningBracket]
 
-                if enumDeclarationKeywords.contains(tokenBeforeLastOpeningBracket) {
+                if tokenBeforeLastOpeningBracket == "enum" {
                     //Highlight enum cases as plain text
                     if isWithinBrackets {
                         return false
@@ -239,8 +257,16 @@ public struct ObjcGrammar: Grammar {
             "#error", "#pragma"
         ]
 
+        private let knownMacros: Set<String> = [
+            "NS_ENUM", "NS_CLOSED_ENUM"
+        ]
+
         func matches(_ segment: Segment) -> Bool {
             if preprocessorDirective.contains(segment.tokens.current) {
+                return true
+            }
+
+            if knownMacros.contains(segment.tokens.current) {
                 return true
             }
 
