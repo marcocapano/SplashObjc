@@ -1,7 +1,5 @@
 # SplashObjc
-<p align="center">
-    <img src="Images/ReadmeHeader.png" min-width="100%" alt="SplashObjc" />
-</p>
+<img src="Images/ReadmeHeader.png" min-width="100%" alt="SplashObjc" />
 
 <p align="center">
     <a href="https://swift.org/package-manager">
