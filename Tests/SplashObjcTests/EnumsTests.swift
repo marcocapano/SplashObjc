@@ -3,7 +3,9 @@
 //
 //  Created by Marco Capano on 06/04/2020.
 //
-//  Thanks to https://nshipster.com/ns_enum-ns_options/ for a really useful article on Objective-C enums ❤️
+//  Thanks to https://nshipster.com/ns_enum-ns_options/
+//  and https://www.swiftjectivec.com/ns_closed_enum/
+//  for some really interesting articles on Objective-C enums ❤️
 
 import XCTest
 import Splash
