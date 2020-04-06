@@ -128,5 +128,5 @@ If you like this project, I strongly recommend you try creating support for anot
 If you'd like to contribute or if you see any missing thing or error, please do not esitate to contact me or open a PR!
 
 ### Contacts
-[marco24capano@icloud.com](emailto:marco24capano@icloud.com)
+[marco24capano@icloud.com](mailto:marco24capano@icloud.com)
 [marcocapano.dev](https://marcocapano.dev)
