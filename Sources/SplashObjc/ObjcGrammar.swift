@@ -91,6 +91,31 @@ public struct ObjcGrammar: Grammar {
         var tokenType: TokenType { return .type }
 
         func matches(_ segment: Segment) -> Bool {
+            /*Prevent enum values from being highlighted as a Type in enum definitions like the following:
+             typedef enum {
+                 UITableViewCellStyleDefault,
+                 UITableViewCellStyleValue1,
+                 UITableViewCellStyleValue2,
+                 UITableViewCellStyleSubtitle
+             } UITableViewCellStyle;
+            */
+            if let lastOpeningBracketIndex = segment.tokens.all.lastIndex(of: "{") {
+                let isWithinBrackets = segment.tokens.count(of: "{") != segment.tokens.count(of: "}")
+                let beforeLastOpeningBracket = segment.tokens.all.index(lastOpeningBracketIndex, offsetBy: -1)
+
+                if segment.tokens.all[beforeLastOpeningBracket] == "enum" {
+                    //Highlight enum cases as plain text
+                    if isWithinBrackets {
+                        return false
+                    }
+
+                    //Highlight the typedef name as plain text
+                    if segment.tokens.previous == "}" && segment.tokens.next == ";" {
+                        return false
+                    }
+                }
+            }
+
             // Types should not be highlighted when declared
             if let previousToken = segment.tokens.previous {
 

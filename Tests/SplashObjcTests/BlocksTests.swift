@@ -103,7 +103,7 @@ class BlocksTests: XCTestCase {
     func testBlockAsAnArgumentToAMethodCall() {
         let components = highlighter.highlight("""
         [someObject someMethodThatTakesABlock:^ReturnType (NSString *s) {
-            //stuff
+            NSString *string;
         }];
         """)
 
@@ -121,7 +121,9 @@ class BlocksTests: XCTestCase {
             .whitespace(" "),
             .plainText("{"),
             .whitespace("\n    "),
-            .token("//stuff", .comment),
+            .token("NSString", .type),
+            .whitespace(" "),
+            .plainText("*string;"),
             .whitespace("\n"),
             .plainText("}];")
         ])
