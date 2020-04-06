@@ -1,5 +1,5 @@
 # SplashObjc
-<p align="center">
+<p align="left">
     <a href="https://swift.org/package-manager">
         <img src="https://img.shields.io/badge/spm-compatible-brightgreen.svg?style=flat" alt="Swift Package Manager" />
     </a>
