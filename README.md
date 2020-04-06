@@ -9,7 +9,9 @@
     </a>
 </p>
 
-This is **SplashObjc**, an Objective-C syntax highlighter based on [Splash](https://github.com/JohnSundell/Splash), a Swift syntax highlighter. It can be used to generate HTML and Images from your Objective-C code.
+This is **SplashObjc**, an Objective-C syntax highlighter based on [Splash](https://github.com/JohnSundell/Splash), a Swift syntax highlighter. It can be used to generate HTML and Images and `NSAttributedString`s from your Objective-C code.
+
+It is already quite capable, with support for blocks, macros, functions, control statements, classes, procolocols, properties, object literals and more.
 
 ## Usage
 
@@ -128,9 +130,16 @@ $ make install
 This project could not exist without the work on Splash by [John Sundell](https://github.com/JohnSundell/). 
 If you like this project, I strongly recommend you try creating support for another language. John has made a really great job making the code readable and easy to work with.
 
-If you'd like to contribute or if you see any missing thing or mistake, please do not esitate to contact me or open a PR!
+### Why is this not a fork of Splash?
 
-### Contacts
+I could have just forked the Splash project, added `ObjcGrammar.swift` and its tests and modified the command line tools provided to accept a grammar parameter. The reason i didnt is I would then have had to manually merge the original project with future updates.
+
+Instead, by using SwiftPM, the whole process is nicer 😊
+
+# Contacts
+
 [marco24capano@icloud.com](mailto:marco24capano@icloud.com)
 
 [marcocapano.dev](https://marcocapano.dev)
+
+If you'd like to contribute or if you see any missing thing or mistake, please do not esitate to contact me or open a PR!
