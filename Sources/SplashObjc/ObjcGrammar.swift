@@ -47,7 +47,7 @@ public struct ObjcGrammar: Grammar {
 
         //Property Attributes
         "nonatomic", "atomic", "readwrite", "readonly", "getter",
-        "assign", "copy", "strong", "weak", "strong", "unsafe_unretained",
+        "assign", "copy", "strong", "weak", "unsafe_unretained",
         "_Nonnull", "_Nullable", "nullable", "nonnull", "__block",
 
         //---
