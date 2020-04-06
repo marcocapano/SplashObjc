@@ -3,7 +3,9 @@
 //
 //  Created by Marco Capano on 06/04/2020.
 //
-//  Thanks to https://nshipster.com/ns_enum-ns_options/ for a really useful article on Objective-C enums ❤️
+//  Thanks to https://nshipster.com/ns_enum-ns_options/
+//  and https://www.swiftjectivec.com/ns_closed_enum/
+//  for some really interesting articles on Objective-C enums ❤️
 
 import XCTest
 import Splash
@@ -76,6 +78,70 @@ class EnumsTests: XCTestCase {
             .plainText("}"),
             .whitespace(" "),
             .plainText("UITableViewCellStyle;")
+        ])
+    }
+
+    func testNSEnum() {
+        let components = highlighter.highlight("""
+        typedef NS_ENUM(NSUInteger, AccountType) {
+            AccountTypeNew,
+            AccountTypeExisting,
+            AccountTypeUnknown
+        };
+        """)
+
+        XCTAssertEqual(components, [
+            .token("typedef", .keyword),
+            .whitespace(" "),
+            .token("NS_ENUM", .preprocessing),
+            .plainText("("),
+            .token("NSUInteger", .type),
+            .plainText(","),
+            .whitespace(" "),
+            .token("AccountType", .type),
+            .plainText(")"),
+            .whitespace(" "),
+            .plainText("{"),
+            .whitespace("\n    "),
+            .plainText("AccountTypeNew,"),
+            .whitespace("\n    "),
+            .plainText("AccountTypeExisting,"),
+            .whitespace("\n    "),
+            .plainText("AccountTypeUnknown"),
+            .whitespace("\n"),
+            .plainText("};")
+        ])
+    }
+
+    func testNSClosedEnum() {
+        let components = highlighter.highlight("""
+        typedef NS_CLOSED_ENUM(NSUInteger, AccountType) {
+            AccountTypeNew,
+            AccountTypeExisting,
+            AccountTypeUnknown
+        };
+        """)
+
+        XCTAssertEqual(components, [
+            .token("typedef", .keyword),
+            .whitespace(" "),
+            .token("NS_CLOSED_ENUM", .preprocessing),
+            .plainText("("),
+            .token("NSUInteger", .type),
+            .plainText(","),
+            .whitespace(" "),
+            .token("AccountType", .type),
+            .plainText(")"),
+            .whitespace(" "),
+            .plainText("{"),
+            .whitespace("\n    "),
+            .plainText("AccountTypeNew,"),
+            .whitespace("\n    "),
+            .plainText("AccountTypeExisting,"),
+            .whitespace("\n    "),
+            .plainText("AccountTypeUnknown"),
+            .whitespace("\n"),
+            .plainText("};")
         ])
     }
 }
