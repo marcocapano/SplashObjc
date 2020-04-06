@@ -138,6 +138,12 @@ $ make install
 - SplashMarkdown port to SplashObjcMarkdown
 - Jekyll plugin to highlight code in your blog posts
 
+# Limitations
+
+`SplashObjc` works on a few assumptions:
+- class names always have the first letter uppercase
+- Macros are all uppercased, with words separated by an underscore.     Example: NS_CLOSED_ENUM
+
 # Acknowledgements
 
 This project could not exist without the work on Splash by [John Sundell](https://github.com/JohnSundell/). 
