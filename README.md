@@ -1,5 +1,9 @@
 # SplashObjc
-<p align="left">
+<p align="center">
+    <img src="Images/ReadmeHeader.png" width="528" max-width="90%" alt="SplashObjc" />
+</p>
+
+<p align="center">
     <a href="https://swift.org/package-manager">
         <img src="https://img.shields.io/badge/spm-compatible-brightgreen.svg?style=flat" alt="Swift Package Manager" />
     </a>
