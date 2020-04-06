@@ -1,6 +1,6 @@
 # SplashObjc
 <p align="center">
-    <img src="Images/ReadmeHeader.png" width="528" max-width="90%" alt="SplashObjc" />
+    <img src="Images/ReadmeHeader.png" max-width="90%" alt="SplashObjc" />
 </p>
 
 <p align="center">
