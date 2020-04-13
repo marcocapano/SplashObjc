@@ -12,7 +12,7 @@ let package = Package(
             targets: ["SplashObjc"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/JohnSundell/Splash", from: "0.11.1")
+        .package(url: "https://github.com/marcocapano/Splash", .branch("master"))
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -26,6 +26,10 @@ let package = Package(
         ),
         .target(
             name: "SplashObjcImageGen",
+            dependencies: ["SplashObjc", "Splash"]
+        ),
+        .target(
+            name: "SplashObjcMarkdown",
             dependencies: ["SplashObjc", "Splash"]
         ),
         .target(
