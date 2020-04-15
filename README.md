@@ -96,7 +96,7 @@ The decorated Markdown will be returned as standard output.
 
 Highlighting can be skipped for any code block by adding `no-highlight` next to the block’s opening row of backticks — like this: *“```no-highlight”*.
 
-#### SplashTokenizer
+#### SplashObjcTokenizer
 
 If you're interested in seeing the actual bits the package produces, you can use the tool `SplashObjcTokenizer`.
 Example:
